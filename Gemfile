@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-
+gem 'dynamic_form', '1.1.4'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -18,6 +18,25 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+end
+
+group :test, :development do
+  gem 'pry'
+  gem 'pry-doc'
+  gem 'pry-debugger'
+  gem 'rspec-rails', '~> 2.11'
+
+  gem 'better_errors'
+  gem 'annotate'
+  gem 'meta_request'
+end
+
+group :test do
+  gem 'capybara', '1.1.2'
+  gem 'factory_girl', '2.6.4'
+  gem 'simplecov', :require => false
+  gem 'launchy'
+  gem 'email_spec', '1.2.1'
 end
 
 gem 'jquery-rails'
