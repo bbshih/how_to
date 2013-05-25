@@ -9,7 +9,13 @@
   <b>Description:</b>
   <%= @list.description %>
 </p>
+<ul>
+<% @list.tasks.each do |task| %>
+  <li><%= task.description %> - <%= link_to "Edit", [:edit, @list, task] %> - <%= link_to "Delete", [@list,task], method: :delete %></li>
+<% end %>
+</ul>
 
+<%= link_to "Add Ticket", new_list_task_path(@list) %>
 
 <%= link_to 'Edit', edit_list_path(@list) %> |
 <%= link_to 'Back', lists_path %>

@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  before_filter :find_list
   # GET /tasks
   # GET /tasks.json
   def index
@@ -24,7 +25,7 @@ class TasksController < ApplicationController
   # GET /tasks/new
   # GET /tasks/new.json
   def new
-    @task = Task.new
+    @task = @list.tasks.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,15 +41,16 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = Task.new(params[:task])
+    @task = @list.tasks.build(params[:task])
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created.' }
-        format.json { render json: @task, status: :created, location: @task }
+        format.html { flash[:notice] = "Ticket has been created."
+      redirect_to [@list, @task] }
+        format.json { render json: [@list,@task], status: :created, location: [@list,@task] }
       else
         format.html { render action: "new" }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
+        format.json { render json: [@list,@task].errors, status: :unprocessable_entity }
       end
     end
   end
@@ -60,7 +62,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.update_attributes(params[:task])
-        format.html { redirect_to @task, notice: 'Task was successfully updated.' }
+        format.html { redirect_to [@list, @task], notice: 'Task was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -76,8 +78,13 @@ class TasksController < ApplicationController
     @task.destroy
 
     respond_to do |format|
-      format.html { redirect_to tasks_url }
+      format.html { redirect_to @list }
       format.json { head :no_content }
     end
   end
+
+  private
+    def find_list
+      @list = List.find(params[:list_id])
+    end
 end
